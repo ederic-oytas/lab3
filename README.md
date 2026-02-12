@@ -133,40 +133,22 @@ TTC threshold of `1.0`. It will consist of two tests:
   Drive forward. Your car should not brake and make it to the end of the
   hallway.
 
-## 2. Overview
+### 1-2: ROS 2 Messages
 
-The goal of this lab is to develop a safety node for the race cars
-that will stop the car from collision when travelling at higher
-velocities. We will implement Instantaneous Time to Collision (iTTC)
-using the `LaserScan` message in the simulator.
+This section will cover several of the messages to know about for this lab.
 
-For different commonly used ROS 2 messages, they are kept mostly the
-same as in ROS 1. You can use `ros2 interface show <msg_name>` to see
-the definition of messages. Note for messages that are not installed
-by default by the distro we use in our container, you'll have to first
-install it for this to work.
+#### The `AckermannDriveStamped` Message
 
-This assignment will begin your group efforts. Every group member must
-implement their own version of automatic emergency braking as a ROS
-node. For a group of three students alice, bob, and charley, their
-nodes would be:
-
-    ${HOME}/sim_ws/src/
-	   |
-	   +-- alice_safety_node/
-	   |
-	   +-- bob_safety_node/
-	   |
-	   +-- charley_safety_node/
-	   
-The launch file must accept a command line parameter to select which
-safety node to run. The remaining instructions use `safety_node` as a
-placeholder for the individual implemenatations.
-
+This is a message you've used in Lab 1.
+[AckermannDriveStamped](http://docs.ros.org/en/jade/api/ackermann_msgs/html/msg/AckermannDriveStamped.html)
+is the message that is used to send drive commands to the car in the simulator
+and to the motors in real life. You can cause the car to brake by sending an
+`AckermannDriveStamped` message with the `drive.speed` field set to `0.0`.
 
 #### The `LaserScan` Message
 
-[LaserScan](http://docs.ros.org/en/noetic/api/sensor_msgs/html/msg/LaserScan.html)
+This is a message you've used in Lab 2. The
+[LaserScan](https://docs.ros2.org/foxy/api/sensor_msgs/msg/LaserScan.html)
 message contains several fields that will be useful to us. You can see
 detailed descriptions of what each field contains in the API. The one
 we'll be using the most is the `ranges` field. This is an array that
@@ -176,20 +158,25 @@ iTTC with the LaserScan messages.
 
 #### The `Odometry` Message
 
+This is a new message that you'll be using in this lab.
 Both the simulator node and the car itself publish
-[Odometry](http://docs.ros.org/en/noetic/api/nav_msgs/html/msg/Odometry.html)
+[Odometry](https://docs.ros2.org/foxy/api/nav_msgs/msg/Odometry.html)
 messages. Within its several fields, the message includes the cars
-position, orientation, and velocity. You'll need to explore this
-message type in this lab.
+position, orientation, and velocity. This will be useful for getting the speed
+of the car.
 
-#### The `AckermannDriveStamped` Message
+Now, the odometry topics vary between the simulator and vehicle:
 
-You've already used
-[AckermannDriveStamped](http://docs.ros.org/en/jade/api/ackermann_msgs/html/msg/AckermannDriveStamped.html)
-in the previous lab. It will be the message type that we'll use
-throughout the course to send driving commands to the simulator and
-the car. In the simulator, you can stop the car by sending an
-`AckermannDriveStamped` message with the `speed` field set to 0.0.
+* Simulator: `/ego_racecar/odom`
+* Vehicle: `/odom`
+
+This nuance is already covered by the launch files provided to you in this lab.
+But it's important to keep this mind for future labs.
+
+NOTE: The odometry data provided by `/ego_racecar/odom` is near-perfect
+(providing almost the exact location where the car in in the simulator).
+However, in real life, the odometry data from `/odom` will contain
+inaccuracies.
 
 ## 3. The TTC Calculation
 
