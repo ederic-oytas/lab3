@@ -1,5 +1,9 @@
 # Lab 3: Automatic Emergency Braking
 
+This lab is the first lab that you'll be working in teams. Each team member
+will contribute their own implementation of the safety node and put them in
+the same package.
+
 ## Learning Goals
 
 - Use Time To Collision (TTC) to predict when the car is going to collide with
@@ -31,6 +35,8 @@ ${HOME}
 
 > **NOTE**: Keep in mind that `~` is always replaced with your home directory,
 > so `${HOME}/some_dir` and `~/some_dir` are equivalent.
+
+
 
 ## 2. Overview
 
