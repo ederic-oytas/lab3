@@ -100,7 +100,9 @@ class SafetyNode(Node):
 
         ranges = np.array(scan_msg.ranges)
         ttcs = np.zeros_like(ranges)
-        for i, r in enumerate(ranges):
+        for i, r_laser in enumerate(ranges):
+            # TODO: Calculate r (range in base frame)
+            r = ...
             # TODO: Calculate theta, r_dot, and ttc
             theta = ...
             r_dot = ...
