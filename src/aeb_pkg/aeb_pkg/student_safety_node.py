@@ -91,15 +91,15 @@ class SafetyNode(Node):
             )
             return
 
-        v_x = self.last_odom_msg.twist.twist.linear.x
+        v_x = self.last_odom_msg.twist.twist.linear.x  # Represents car speed
         if v_x <= 0.01:
             return  # Do nothing if almost stopped
 
         angle_min = scan_msg.angle_min
         angle_inc = scan_msg.angle_increment
 
-        ranges = np.array(scan_msg.ranges)
-        ttcs = np.zeros_like(ranges)
+        ranges = np.array(scan_msg.ranges)  # Converts to Numpy array
+        ttcs = np.zeros_like(ranges)  # Creates array of zeros of same size
         for i, r_laser in enumerate(ranges):
             # TODO: Calculate values in the laser frame
             theta_laser = ...
