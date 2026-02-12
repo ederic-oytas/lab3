@@ -200,13 +200,12 @@ collide with an obstacle if it maintained its current heading and
 velocity. We approximate the time-to-collision using **Instantaneous
 Time-to-Collision** (iTTC), which is the ratio of instantaneous range to
 range rate calculated from current range measurements and velocity
-measurements of the vehicle. Below is the formula for the TTC for a single
-impact point:
+measurements of the vehicle. Below is the formula for the iTTC:
 
 $$
-TTC_i(t)
-= \frac{r_i}{\lbrace -\dot{r_i} \rbrace_{+}}
-= \frac{r_i}{\max(\frac{d}{dt}r_i, 0)}
+iTTC
+= \frac{r}{\lbrace -\dot{r} \rbrace_{+}}
+= \frac{r}{\max(x, 0)}
 $$
 
 where:
@@ -214,12 +213,38 @@ where:
 * $r$ is the instantaneous range measurement
 * $\dot{r}$ is the current rate of change for that range measurement.
 
-#### Calculating $r$
+#### Getting Data from the Laser
 
-To obtain the instantaneous range $r$ to an obstacle, first use the
-corresponding range measurement from the `LaserScan` message. Now since the
-scan data comes from the laser frame, the range will also need to be converted
-to the base frame.
+First, you'll need to retrieve data from the laser. This is stored in the
+`ranges` array. From here, you can calculate its angle using the calculations
+you've derived from Lab 2.
+
+#### Converting to the base frame
+
+Now, the range and angles you have are in the **laser frame**, not the
+**base frame.** Let $r_{laser}$ and $\theta_{laser}$ be the range and angle
+in the laser frame. To calculate the coordinates to a point in the laser frame,
+you'll take x and y components using the range and angle:
+
+$$
+x_{laser} = r_{laser} \cos(\theta_{laser})  \\
+y_{laser} = r_{laser} \sin(\theta_{laser})
+$$
+
+Afterward, you can perform your transformation to the base frame (assuming
+no rotation):
+
+$$
+x_{base} = x_{laser} + x_t\\
+y_{base} = y_{laser} + y_t
+$$
+
+where $x_t$ and $y_t$ are the x and y components of the translation vector for
+the translation from laser to base.
+
+From here, you'll need to find $r_{base}$ and $\theta_{base}$. Then $r_{base}$
+may be calculated using the distance formula, and $\theta_{base}$ may be
+calculated using the $\arctan$ function.
 
 #### Calculating range rate $\dot{r}$
 
