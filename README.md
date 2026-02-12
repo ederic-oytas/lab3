@@ -1,10 +1,12 @@
 # Lab 3: Automatic Emergency Braking
 
-## 1. Learning Goals
+## Learning Goals
 
-- Using the `LaserScan` message in ROS 2
-- Instantaneous Time to Collision (iTTC)
-- Safety critical systems
+- Use Time To Collision (TTC) to predict when the car is going to collide with
+  an obstacle.
+- Apply principles of a safety-critical system by applying safety measures
+  (brakes) to prevent the system from going into an unsafe state.
+- Learn about the `LaserScan` and `Odometry` messages in ROS 2.
 
 ## 2. Overview
 
