@@ -205,7 +205,7 @@ measurements of the vehicle. Below is the formula for the iTTC:
 $$
 iTTC
 = \frac{r}{\lbrace -\dot{r} \rbrace_{+}}
-= \frac{r}{\max(x, 0)}
+= \frac{r}{\max(r, 0)}
 $$
 
 where:
