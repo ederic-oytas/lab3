@@ -269,7 +269,21 @@ drive_msg = AckermannDriveStamped()
 drive_msg.drive.speed = 0.0
 ```
 
-### 1-5: Testing your Node
+### 1-5: Your Tasks
+
+The base code provides launch files and a template safety node file for your
+node named `student_safety_node.py`
+
+For your first task, rename `student_safety_node.py` to
+`<yourname>_safety_node.py`. Then, in `setup.py`, replace all instances of
+`student` with your first name. (I recommend you rebuild your package and
+launch to make sure it's correct.)
+
+Then, in `<yourname>_safety_node.py`, there are several `TODO` comment tasks
+to complete. You'll need to complete these tasks to implement the braking
+functionality of the node.
+
+### 1-6: Testing your Node
 
 To test your node in the simulator, use `teleop_twist_keyboard` in a separate
 terminal and have your node running at the same time. Use
