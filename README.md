@@ -200,12 +200,13 @@ collide with an obstacle if it maintained its current heading and
 velocity. We approximate the time-to-collision using **Instantaneous
 Time-to-Collision** (iTTC), which is the ratio of instantaneous range to
 range rate calculated from current range measurements and velocity
-measurements of the vehicle. Below is the formula for the iTTC:
+measurements of the vehicle. Below is the formula for the TTC for a single
+impact point:
 
 $$
-iTTC
-= \frac{r}{\lbrace -\dot{r} \rbrace_{+}}
-= \frac{r}{\max(r, 0)}
+TTC_i(t)
+= \frac{r_i}{\lbrace -\dot{r_i} \rbrace_{+}}
+= \frac{r_i}{\max(\frac{d}{dt}r_i, 0)}
 $$
 
 where:
