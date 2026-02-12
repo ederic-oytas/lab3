@@ -137,7 +137,8 @@ For your demonstration, you will run your safety node with a TTC threshold of
 
 ### 1-2: ROS 2 Messages
 
-This section will cover several of the messages to know about for this lab.
+This section will give an overview for some of the messages you'll need to
+know about for this lab.
 
 #### The `AckermannDriveStamped` Message
 
@@ -167,7 +168,7 @@ messages. Within its several fields, the message includes the cars
 position, orientation, and velocity. This will be useful for getting the speed
 of the car.
 
-Now, the odometry topics vary between the simulator and vehicle:
+The odometry topics vary between the simulator and vehicle:
 
 * Simulator: `/ego_racecar/odom`
 * Vehicle: `/odom`
