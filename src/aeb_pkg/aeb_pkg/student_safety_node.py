@@ -91,25 +91,36 @@ class SafetyNode(Node):
             )
             return
 
-        v_x = self.last_odom_msg.twist.twist.linear.x
+        v_x = self.last_odom_msg.twist.twist.linear.x  # Represents car speed
         if v_x <= 0.01:
             return  # Do nothing if almost stopped
 
         angle_min = scan_msg.angle_min
         angle_inc = scan_msg.angle_increment
 
-        ranges = np.array(scan_msg.ranges)
-        ttcs = np.zeros_like(ranges)
+        ranges = np.array(scan_msg.ranges)  # Converts to Numpy array
+        ttcs = np.zeros_like(ranges)  # Creates array of zeros of same size
         for i, r_laser in enumerate(ranges):
-            # TODO: Calculate r (range in base frame)
-            r = ...
-            # TODO: Calculate theta, r_dot, and ttc
-            theta = ...
+            # TODO: Calculate values in the laser frame
+            theta_laser = ...
+            x_laser = ...
+            y_laser = ...
+            # TODO: Calculate values in the base frame
+            #   (hint: use np.sqrt() and np.arctan2())
+            x_base = ...
+            y_base = ...
+            r_base = ...
+            theta_base = ...
+            # TODO: Calculate r_dot and TTC
             r_dot = ...
             ttcs[i] = ...
 
-        # TODO: If any TTC falls below threshold, send brake message!
-        #   HINT: Use np.min()
+        # TODO: Replace False with correct condition
+        #   (hint: use np.min())
+        is_any_ttc_below_threshold = False
+        if is_any_ttc_below_threshold:
+            pass
+            # TODO: Send brake message
 
 
 def main() -> None:
