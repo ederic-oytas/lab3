@@ -82,6 +82,57 @@ ${HOME}
 Writing your own node is still an independent task, but future labs will be
 entirely team-based.
 
+## Part 1: Safety Node in the Simulator
+
+### 1-1: Specification
+
+Your team will be making a package named `aeb_pkg`, containing a node for each
+member of your team, each named `<student>_safety_node` with `<student>`
+replaced with each teammate's first name.
+
+#### Launching
+
+The base code located in this repository gives completed launch files and
+installs them as data files already (so you don't need to modify the launch
+files or add them as data files).
+
+The launch file `sim_launch.py` has the following interface:
+
+```
+ros2 launch aeb_pkg sim_launch.py target:=<target_node> ttc_thresh:=<ttc_threshold>
+```
+
+For example, if you want to launch the node of a team member named `charlie`
+with a TTC threshold of 1.0, the command would be:
+
+```
+ros2 launch aeb_pkg sim_launch.py target:=charlie_safety_node ttc_thresh:=1.0
+```
+
+The launch file will then run that specific node, passing the TTC threshold to
+it.
+
+#### Safety Nodes
+
+Each teammates in your team has their own safety node. When running, this node
+will calculate Time-to-Collision (TTC) based on the car's odometry and scan
+data. If any TTC falls below the given TTC threshold (`ttc_thresh`), then the
+car sends a drive message to `/drive`, stopping the car
+(`msg.drive.speed = 0.0`).
+
+#### Deliverable (demonstration)
+
+You must be able to demonstrate that your code operators properly in the
+simulator before testing it on the car. You will run your safety node with a
+TTC threshold of `1.0`. It will consist of two tests:
+
+* Have the car face a wall. Drive towards it using `teleop_twist_keyboard` at
+  a speed of about `1.0`. Your safety node must brake before it collides with
+  the wall.
+* Have the car facing straight through one of the hallways in the `levine` map.
+  Drive forward. Your car should not brake and make it to the end of the
+  hallway.
+
 ## 2. Overview
 
 The goal of this lab is to develop a safety node for the race cars
