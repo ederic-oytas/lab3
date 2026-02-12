@@ -36,7 +36,51 @@ ${HOME}
 > **NOTE**: Keep in mind that `~` is always replaced with your home directory,
 > so `${HOME}/some_dir` and `~/some_dir` are equivalent.
 
+This lab is the first lab that you'll be working in teams. Each team member
+will contribute their own implementation of the safety node and put them in
+the same package. For example, if your teammates are `alice`, `bob`, and
+`charlie`, your workspace folder would look like this:
 
+```
+${HOME}
+  |
+  +-- lab3_ws/
+      |
+      +-- src/
+          |
+          +-- aeb_pkg/
+               |
+               +-- aeb_pkg/
+               |    |
+               |    +-- alice_safety_node.py
+               |    |
+               |    +-- bob_safety_node.py
+               |    |
+               |    +-- charlie_safety_node.py
+               |    |
+               |    +-- YOURNAME_safety_node.py   -- Your safety node!
+               |
+               +-- launch/
+               |    |
+               |    +-- sim_launch.py
+               |    |
+               |    +-- veh_launch.py
+               |
+               +-- resource/
+               |    :
+               |
+               +-- test/
+               |    :
+               |
+               +-- package.xml
+               |
+               +-- setup.cfg
+               |
+               +-- setup.py
+```
+
+Writing your own node is still an independent task, but future labs will be
+entirely team-based.
 
 ## 2. Overview
 
