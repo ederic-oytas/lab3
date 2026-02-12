@@ -114,17 +114,19 @@ it.
 
 #### Safety Nodes
 
-Each teammates in your team has their own safety node. When running, this node
+Each team member has their own safety node. While running, the node
 will calculate Time-to-Collision (TTC) based on the car's odometry and scan
 data. If any TTC falls below the given TTC threshold (`ttc_thresh`), then the
 car sends a drive message to `/drive`, stopping the car
 (`msg.drive.speed = 0.0`).
 
-#### Deliverable (demonstration)
+#### Simulator Demonstration
 
-You must be able to demonstrate that your code operators properly in the
-simulator before testing it on the car. You will run your safety node with a
-TTC threshold of `1.0`. It will consist of two tests:
+You must be able to demonstrate that your code operates properly in the
+simulator before testing it on the car.
+
+For your demonstration, you will run your safety node with a TTC threshold of
+`1.0`. It will consist of two tests:
 
 * Have the car face a wall. Drive towards it using `teleop_twist_keyboard` at
   a speed of about `1.0`. Your safety node must brake before it collides with
