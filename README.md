@@ -203,9 +203,9 @@ range rate calculated from current range measurements and velocity
 measurements of the vehicle. Below is the formula for the iTTC:
 
 $$
-iTTC
-= \frac{r}{\lbrace -\dot{r} \rbrace_{+}}
-= \frac{r}{\max(x, 0)}
+TTC_i(t)
+= \frac{r_i}{\lbrace -\dot{r_i} \rbrace_{+}}
+= \frac{r_i}{\max(\frac{d}{dt}r_i, 0)}
 $$
 
 where:
