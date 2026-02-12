@@ -244,32 +244,28 @@ After your calculations, you should end up with an array of iTTCs that
 correspond to each angle. When a time to collision drops below a
 certain threshold, it means a collision is imminent.
 
-## 4. Automatic Emergency Braking with iTTC
+### 1-4. Automatic Emergency Braking
 
-For this lab, you will make a Safety Node that should halt the car
-before it collides with obstacles. To do this, you will make a ROS 2
-node that subscribes to the `LaserScan` and `Odometry` messages. It
-should analyze the `LaserScan` data and, if necessary, publish an
-`AckermannDriveStamped` with the `speed` field set to 0.0 m/s to
-brake. After you've calculated the array of iTTCs, you should decide
-how to proceed with this information. You'll have to decide how to
-threshold, and how to best remove false positives (braking when
-collision isn't imminent). Don't forget to deal with `inf`s or `nan`s
-in your arrays.
+When your car needs to brake, you'll send a drive message to `/drive` with a
+speed of 0. Below is some example Python code which creates such a message:
 
-To test your node, you can launch the sim container with `kb_teleop`
-set to `True` in `sim.yaml`. Then in another `bash` session inside the
-sim container, launch the `teleop_twist_keyboard` node from
-`teleop_twist_keyboard` package for keyboard teleop. It should already
-be installed as a dependency of the simulator. After running the
-simulation, the keyboard teleop, and your safety node, use the reset
-tool for the simulation and drive the vehicle towards a wall.
+```python
+drive_msg = AckermannDriveStamped()
+drive_msg.drive.speed = 0.0
+```
 
-Note the following topic names for your publishers and subscribers:
+### 1-5. Testing your Node
 
-- `LaserScan`: /scan
-- `Odometry`: /ego_racecar/odom, specifically, the longitudinal velocity of the vehicle can be found in `twist.twist.linear.x`
-- `AckermannDriveStamped`: /drive
+To test your node in the simulator, use `teleop_twist_keyboard` in a separate
+terminal and have your node running at the same time. Use
+
+```
+ros2 launch aeb_pkg target:=YOUR_NAME_safety_node ttc_thresh:=1.0
+```
+
+to launch your node. In the simulator, you can teleport the car using **2D**
+**Pose Estimate**. It is recommended that you do the two tests specified in
+1-1.
 
 ## 5. Package
 
