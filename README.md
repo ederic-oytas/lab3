@@ -8,6 +8,30 @@
   (brakes) to prevent the system from going into an unsafe state.
 - Learn about the `LaserScan` and `Odometry` messages in ROS 2.
 
+## File Structure
+
+We will build off the local file structure given in the first lab. Keep this
+structure in mind while you are working through the instructions!
+
+```
+${HOME}
+  |
+  +-- lab1_ws/              -- Lab 1 Workspace folder
+  |
+  +-- lab2_ws/              -- Lab 2 Workspace folder
+  |
+  +-- lab3_ws/              -- Lab 3 Workspace folder (NEW)
+  |
+  +-- sim_ws/               -- Simulator Workspace folder
+```
+
+> **NOTE**: You may choose a different directory to substitute for ${HOME} for
+> your setup; these commands will assume you are using ${HOME} for your setup,
+> so adjust accordingly.
+
+> **NOTE**: Keep in mind that `~` is always replaced with your home directory,
+> so `${HOME}/some_dir` and `~/some_dir` are equivalent.
+
 ## 2. Overview
 
 The goal of this lab is to develop a safety node for the race cars
