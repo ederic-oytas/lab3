@@ -328,9 +328,341 @@ to launch your node. In the simulator, you can teleport the car using **2D**
 **Pose Estimate**. It is recommended that you do the two tests specified in
 Section 1-1.
 
-## Part 2: Safety Node on the Car
+## Part 2: Getting onto the Car
 
-(This section will be updated before Tuesday class.)
+The goal of this section is to get onto the vehicle itself.
+
+### 2-1: Installing NoMachine
+
+First, install [NoMachine](https://www.nomachine.com/). Upon successful
+installation, starting the application will create a window like the following:
+
+![](img/2-1.png)
+
+### 2-2: SSH
+
+This section will teach you **one of the two** ways of getting on the car.
+This way is terminal-based.
+
+SSH stands for "Secure Shell", and it's a protocol which allows you to operate
+a remote machine through the network. The `ssh` command in Linux is a
+command-line utility which uses the SSH protocol. To install it, use the
+following command **inside your container**:
+
+```bash
+apt-get install -y openssh-server
+```
+
+**NOTE**: You will need to install this every time you rebuild your container.
+For convenience, you may add `openssh-server` as one of the dependencies
+installed in your *Dockerfile*, so you don't need to run this every time you
+rebuild.
+
+Once installed, **switch to the same Wi-fi network** that the car is on. The
+credentials of the network will be given during class.
+
+Now, let's connect to the car. The syntax for the command is:
+
+```bash
+ssh USER_NAME@CAR_NAME
+```
+
+So, for example, if your user name is `fire_tires` and your car name is
+`wally`, then the command would be:
+
+```bash
+ssh fire_tires@wally
+```
+
+Run the command for your user on your car. If it asks to continue connecting,
+then say `yes`. Afterward, enter your user's password. On success, you'll be
+greeted with something like:
+
+```
+Welcome to Ubuntu 20.04.6 LTS (GNU/Linux 5.10.120-tegra aarch64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+This system has been minimized by removing packages and content that are
+not required on a system that users do not log into.
+
+To restore this content, you can run the 'unminimize' command.
+
+Expanded Security Maintenance for Infrastructure is not enabled.
+
+0 updates can be applied immediately.
+
+136 additional security updates can be applied with ESM Infra.
+Learn more about enabling ESM Infra service for Ubuntu 20.04 at
+https://ubuntu.com/20-04
+
+Last login: Thu Dec  4 01:30:21 2025 from fe80::182:c88f:912a:e9af%wlan0
+sourced /opt/ros/foxy/setup.bash
+sourced /home/f1/ws/install/local_setup.bash
+```
+
+**NOTE**: The `ssh` (and `scp`) command will sometimes fail and result in the
+following error message. You may have to re-enter the command multiple times
+for it to work.
+
+```
+ssh: connect to host vader port 22: Invalid argument
+lost connection
+```
+
+Explore what files exists in your user using `ls` and `cd`. Below is part of
+the file structure that is on the car:
+
+```
+${HOME}
+  |
+  +-- ws/
+      |
+      +-- build/
+      |
+      +-- install/
+      |
+      +-- log/
+      |
+      +-- src/       -- System nodes and your nodes go here!
+```
+
+NOTE: Remember that you'll always use `colcon build` in `ws/`.
+
+### 2-3: NoMachine
+
+This section will teach you the second of the two ways of getting on the car.
+This way uses the desktop running on the car itself.
+
+**NOTE: Only one user may be on the car at the same time with NoMachine.**
+This is because the car itself only runs a single desktop instance. However,
+you can have several SSH connections to the car.
+
+First, click on "Add" to add a new connection:
+
+![](img/2-3-1.png)
+
+Then, add the host name. If your car's name is `vader`, then you would enter
+`vader` for the host. If the car's name doesn't work, use its IP address.
+
+![](img/2-3-2.png)
+
+Adding a name is optional. Then click "Add" to add the connection.
+
+Next, double-click the new machine.
+
+![](img/2-3-3.png)
+
+If successful, it will bring you to a login page. Enter your credentials.
+
+![](img/2-3-4.png)
+
+Then press "OK". On success on first startup, several new information pages
+will appear. You may skip through all of these.
+
+![](img/2-3-5.png)
+
+This will bring you to the login page. Select your user and enter in your
+password.
+
+![](img/2-3-6.png)
+
+Once you do, you'll be able to access the desktop! (It may take a few minutes
+to load.)
+
+![](img/2-3-7.png)
+
+Click on the "Terminal" to open a new terminal. You can use commands here in
+the same way you use them in a terminal in the simulator container!
+
+![](img/2-3-8.png)
+
+One good command to know is `rviz2`. This is the same program which provides
+visualization for your simulator.
+
+```bash
+rviz2
+```
+
+![](img/2-3-9.png)
+
+### 2-4: SCP
+
+`scp` stands for "SSH copy" and is the SSH version of your `cp` command. It
+behaves very similarly to your `cp` command, but the difference is that either
+the source or destination of the command can be remote.
+
+Below is the syntax for the `scp` command:
+
+```
+scp [-r] SOURCES... TARGET
+```
+
+If you want to transfer one or more files/directories onto the car, `TARGET`
+becomes:
+
+```
+USER_NAME@CAR_NAME:TARGET_DIRECTORY_OR_FILE
+```
+
+Let's use a test file as an example. Go into your `/sim_ws` folder and create
+an empty test file:
+
+```
+cd /sim_ws
+touch test.txt
+```
+
+Then, to transfer it onto a user named `fire_tires` on the car `walle` into its
+`~/ws` directory, the command would be:
+
+```bash
+scp test.txt fire_tires@walle:~/ws
+```
+
+On success, it'll show something like the following:
+
+```
+test.txt                                                                                                      100%    0     0.0KB/s   00:00
+```
+
+Let's check that it's on the car. Use SSH to get on the car:
+
+```bash
+scp test.txt USER_NAME@CAR_NAME
+```
+
+Then, navigate and see that it's there:
+
+```
+cd ~/ws
+ls
+```
+
+`ls` should have `test.txt` in its list.
+
+### 2-5: Running the Stack
+
+In this section, we will run the stack on the car and test manual control.
+
+First, connect to the car using **NoMachine**.
+
+Then, we'll connect to the controller. Turn on the controller by pressing the
+PS button. When it's connected, the light on the top of the controller will
+glow a solid color.
+
+![](img/2-5-1.jpg)
+
+Then, we'll run a stack. Run a new terminal and enter the following:
+
+```
+ros2 launch f1tenth_unlv_veh stack_launch.py
+```
+
+On success, you should see something like the following:
+
+![](img/2-5-2.png)
+
+The message `Opened joystick...` means that the joystick controller has
+connected.
+
+To manually control the car, you must hold down the **Left Bumper** (L1) to
+activate manual control. While holding L1 down, use the **Left Stick** to
+go forward/backwards, and use the **Right Stick** to control the servos to
+steer left and right.
+
+![](img/2-5-3.jpg)
+
+After this, stop the stack.
+
+### 2-6: Running Your Lab 1 Package
+
+Now, we'll try to run your Lab 1 package on the car. First, use `scp` to put
+your lab1_pkg on the car:
+
+```bash
+cd /lab1_ws/src
+scp -r lab1_pkg USER_NAME@CAR_NAME:~/ws/src
+```
+
+Then, get on the car using SSH or NoMachine, and build the package
+specifically.
+
+```bash
+cd ~/ws
+colcon build --packages-select lab1_ws
+source install/local_setup.bash
+```
+
+**NOTE**: It's recommended to use `--packages-select` to avoid building all of
+the packages in the workspace. (It may take a minute to build all of the
+packages.)
+
+Then, launch the stack:
+
+```bash
+ros2 launch f1tenth_unlv_veh stack_launch.py
+```
+
+Then, in a new terminal, launch your package:
+
+```bash
+ros2 launch lab1_pkg lab1_launch.py v:=1.5 d:=0.0
+```
+
+Now, your talker node should be posting to the `/drive` topic. However, it will
+not run yet because the system hasn't activated autonomous control yet. To do
+this, hold down the **Right Bumper** on the controller.
+
+![](img/2-6-1.jpg)
+
+Once held, this will forward whatever's being sent through `/drive` and make
+the car drive.
+
+### 2-7: Running Your Safety Node
+
+Finally, we'll put your `aeb_pkg` on the car. Make sure all of your team
+members' nodes are in your package. Then `scp` it onto the car:
+
+```bash
+cd /lab3_ws/src
+scp -r aeb_pkg USER_NAME@CAR_NAME:~/ws/src
+```
+
+Afterward, build it:
+
+```bash
+cd ~/ws
+colcon build --packages-select aeb_pkg
+source install/local_setup.bash
+```
+
+Then, launch the stack. We will be use a **different** launch file named
+`stack_aeb_launch.py`.
+
+```bash
+ros2 launch f1tenth_unlv_veh stack_aeb_launch.py
+```
+
+This is needed because we need to switch the priorities of manual and
+autonomous driving. So, any messages sent to `/drive` will override any manual
+controls.
+
+Then, in a new terminal, launch your package:
+
+```bash
+ros2 launch aeb_pkg veh_launch.py target:=STUDENT ttc_thresh:=2.0
+```
+
+In your team's demonstration, we will test each of your team members' nodes
+with a TTC threshold of 2.0. If there are too many false positives caused by
+the surrounding walls, then we may lower the TTC threshold.
+
+For your demonstration, you'll drive forward towards an obstacle. If your car
+stops before hitting the obstacle, you'll receive full points for your vehicle
+demonstration.
 
 ## Grading Rubric
 
