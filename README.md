@@ -227,7 +227,10 @@ in the laser frame. To calculate the coordinates to a point in the laser frame,
 you'll take x and y components using the range and angle:
 
 $$
-x_{laser} = r_{laser} \cos(\theta_{laser})  \\
+x_{laser} = r_{laser} \cos(\theta_{laser})
+$$
+
+$$
 y_{laser} = r_{laser} \sin(\theta_{laser})
 $$
 
@@ -235,7 +238,10 @@ Afterward, you can perform your transformation to the base frame (assuming
 no rotation):
 
 $$
-x_{base} = x_{laser} + x_t\\
+x_{base} = x_{laser} + x_t
+$$
+
+$$
 y_{base} = y_{laser} + y_t
 $$
 
