@@ -575,6 +575,10 @@ steer left and right.
 
 ![](img/2-5-3.jpg)
 
+**NOTE**: If the car is steering left when the L1 is held, use `Ctrl+C` to stop
+the stack and relaunch it with a new argument `manual_steer_axis:=2`. This is
+needed because certain controllers map to different axes.
+
 After this, stop the stack.
 
 ### 2-6: Running Your Lab 1 Package
